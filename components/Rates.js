@@ -17,7 +17,7 @@ const Rates = () => {
   }, []);
   return (
     <div>
-      <h2>Курси валют</h2>
+      <h2>Курси валют (Приватбанк)</h2>
       {/* <ul>
         {rates &&
           rates.map((el) => (
