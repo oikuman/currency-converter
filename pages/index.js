@@ -17,10 +17,10 @@ export default function Home() {
         <h1 className={styles.title}>Купівля-продаж валюти</h1>
 
         <Grid container spacing={4}>
-          <Grid item xs={7}>
+          <Grid item xs={12} md={6}>
             <Rates />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={12} md={6}>
             <Converter />
           </Grid>
         </Grid>

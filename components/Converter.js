@@ -19,7 +19,12 @@ const Converter = () => {
     setSum(Number(e.target.value));
   };
 
-  const handleSelect = (e) => setCurrency(e.target.value);
+  const handleSelect = (e) => {
+    setCurrency(e.target.value);
+
+    if (sum) setConvert((findRate(e.target.value) * sum).toFixed(2));
+    else setConvert(0);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
