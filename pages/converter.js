@@ -1,21 +1,23 @@
 import React from "react";
-import money from "./money.json";
 
-import Currencies from "../components/Currencies";
+import Converter from "../components/Converter";
 
-export default function Home() {
-  React.useEffect(() => {
-    localStorage.setItem("money", JSON.stringify(money));
-  }, []);
-
-  return <Currencies />;
-}
+const converter = () => {
+  return (
+    <div>
+      <Converter />
+    </div>
+  );
+};
 
 // export async function getStaticProps() {
+//   // );
+
 //   try {
 //     const res = await axios.get(`http://localhost:3000/api/money`);
 //     // const res = await axios.get(`/api/money`);
-//     // Pass data to the page via props
+//     // By returning { props: { posts } }, the Blog component
+//     // will receive `posts` as a prop at build time
 //     return {
 //       props: {
 //         data: Object.values(res.data).sort((a, b) =>
@@ -28,3 +30,4 @@ export default function Home() {
 //     return { props: { err: JSON.stringify(err) } };
 //   }
 // }
+export default converter;

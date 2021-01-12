@@ -10,10 +10,10 @@
 .main {
   padding: 5rem 0;
   flex: 1;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .footer {
@@ -114,9 +114,9 @@
   height: 1em;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
   }
-}
+} */
