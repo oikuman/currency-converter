@@ -86,41 +86,11 @@ const Currencies = () => {
     setSelected(sorted([...removed(selected, e.currentTarget.dataset.id)]));
   };
 
-  const findExRate = (curr, otherCurr) => {
-    //
-  };
-
-  const checkAPI = () => {
-    //
-  };
-
-  const updateMoney = () => {
-    //
-  };
-
-  const handleUpdate = () => {
-    updateMoney();
-    // clearMoney();
-  };
-
-  const clearMoney = () => {
-    localStorage.removeItem("money");
-  };
-
-  const getMoney = () => {
-    updateMoney();
-    return JSON.parse(localStorage.getItem("money"));
-  };
-  const getFromMoney = (str) => {
-    let money = JSON.parse(localStorage.getItem("money"));
-    if (money) return money.str;
-    return null;
-  };
-
   React.useEffect(() => {
     // console.log("Current date:", getDate());
     // console.log(JSON.parse(localStorage.getItem("money")).rates);
-    setRates(JSON.parse(localStorage.getItem("money")).rates);
+    const money = JSON.parse(localStorage.getItem("money"));
+    if (money) setRates(money.rates);
   }, []);
 
   // React.useEffect(() => {
