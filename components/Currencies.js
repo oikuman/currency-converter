@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { format } from "date-fns";
 import {
   Grid,
   Tooltip,
@@ -24,17 +25,27 @@ import CurrSelect from "../components/CurrSelect";
 import withLayout from "./withLayout";
 import data from "./data";
 
-// const useStyles = makeStyles((theme) => ({
-//   text: {
-//     fontSize: "11rem",
-//   },
-// }));
+import { NotificationContainer } from "react-notifications";
+import { createWarning, createSuccess } from "./alerts";
+
+import Money from "./Money";
+
+const useStyles = makeStyles((theme) => ({
+  name: {
+    fontSize: "1.5rem",
+    textAlign: "left",
+  },
+  rate: {
+    fontSize: "1.5rem",
+    textAlign: "center",
+  },
+}));
 
 const Currencies = () => {
-  // const classes = useStyles();
+  const classes = useStyles();
   // console.log(data);
   const [basicCurrency, setBasicCurrency] = React.useState(null);
-  const [money, setMoney] = React.useState(null);
+  const [rates, setRates] = React.useState(null);
   const [general, setGeneral] = React.useState([...data]);
   const [selected, setSelected] = React.useState([]);
 
@@ -57,6 +68,8 @@ const Currencies = () => {
     );
   };
 
+  const getDate = () => format(new Date(), "yyyy-MM-dd");
+
   const handleSelect = (e) => {
     // console.log("id", e.currentTarget.dataset.id);
     setSelected(
@@ -73,41 +86,25 @@ const Currencies = () => {
     setSelected(sorted([...removed(selected, e.currentTarget.dataset.id)]));
   };
 
-  // setSelected(added(selected,));
-
-  const saveToLocalStorage = (obj) => {
-    let str = localStorage.getItem("money");
-    let money = JSON.parse(str);
-    money = { ...money, ...obj };
-    localStorage.setItem("money", JSON.stringify(money));
+  const findExRate = (curr, otherCurr) => {
+    //
   };
 
-  const findExRate = (curr, otherCurr) => {
-    const key = process.env.apiKey;
-    const currStr = `${curr.id}_${otherCurr.id}`;
-    console.log(currStr);
-    const url = "https://free.currconv.com/api/v7/convert";
-    axios
-      .get(`${url}?q=${currStr}&compact=ultra&apiKey=${key}`)
-      .then((res) => {
-        console.log(res.data[currStr]);
-        saveToLocalStorage(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const checkAPI = () => {
+    //
   };
 
   const updateMoney = () => {
-    if (data) {
-      data.forEach((item) => {
-        findExRate({ id: "USD" }, item);
-      });
-    }
+    //
   };
 
   const handleUpdate = () => {
     updateMoney();
+    // clearMoney();
+  };
+
+  const clearMoney = () => {
+    localStorage.removeItem("money");
   };
 
   const getMoney = () => {
@@ -121,7 +118,9 @@ const Currencies = () => {
   };
 
   React.useEffect(() => {
-    setMoney(JSON.parse(localStorage.getItem("money")));
+    // console.log("Current date:", getDate());
+    // console.log(JSON.parse(localStorage.getItem("money")).rates);
+    // setRates(JSON.parse(localStorage.getItem("money")).rates);
   }, []);
 
   // React.useEffect(() => {
@@ -130,13 +129,10 @@ const Currencies = () => {
 
   return (
     <div>
-      <Grid container spacing={4} justify="center">
-        <Grid item>
-          <Button variant="outlined" onClick={handleUpdate}>
-            Update
-          </Button>
-        </Grid>
-      </Grid>
+      {/* NOTIFICATION */}
+      <Money />
+      <NotificationContainer />
+
       <Grid container spacing={4} justify="center">
         <Grid item xs={10} md={6}>
           <CurrSelect
@@ -160,34 +156,59 @@ const Currencies = () => {
         {selected &&
           selected.map((item) => (
             <ListItem key={item.id}>
-              <ListItemAvatar>
-                <Avatar>{item.currencySymbol || item.id}</Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={item.currencyName} />
-              <ListItemText
-                primary={
-                  money && basicCurrency
-                    ? (
-                        money[`USD_${item.id}`] /
-                        money[`USD_${basicCurrency.id}`]
-                      ).toFixed(4)
-                    : money
-                    ? money[`USD_${item.id}`].toFixed(4)
-                    : null
-                }
-              />
-              <ListItemIcon>
-                <Tooltip title="Remove from Favourites">
-                  <Fab
-                    color="secondary"
-                    aria-label="delete"
-                    data-id={item.id}
-                    onClick={handleDeselect}
-                  >
-                    <DeleteIcon />
-                  </Fab>
-                </Tooltip>
-              </ListItemIcon>
+              <Grid container spacing={4} justify="center" alignItems="center">
+                <Grid item xs={2}>
+                  <ListItemAvatar>
+                    <Avatar>{item.currencySymbol || item.id}</Avatar>
+                  </ListItemAvatar>
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    classes={{
+                      primary: classes.name,
+                    }}
+                    primary={item.currencyName}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    classes={{
+                      primary: classes.rate,
+                    }}
+                    // rates
+                    primary={
+                      rates && basicCurrency
+                        ? (
+                            rates.find((rate) => rate[`USD_${item.id}`])[
+                              `USD_${item.id}`
+                            ] /
+                            rates.find(
+                              (rate) => rate[`USD_${basicCurrency.id}`]
+                            )[`USD_${basicCurrency.id}`]
+                          ).toFixed(4)
+                        : rates
+                        ? rates
+                            .find((rate) => rate[`USD_${item.id}`])
+                            [`USD_${item.id}`].toFixed(4)
+                        : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <ListItemIcon>
+                    <Tooltip title="Remove from Favourites">
+                      <Fab
+                        color="secondary"
+                        aria-label="delete"
+                        data-id={item.id}
+                        onClick={handleDeselect}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </Tooltip>
+                  </ListItemIcon>
+                </Grid>
+              </Grid>
             </ListItem>
           ))}
       </List>
@@ -206,40 +227,70 @@ const Currencies = () => {
               // const rate = getFromMoney(`USD_${item.id}`);
               return (
                 <ListItem key={item.id}>
-                  <ListItemAvatar>
-                    <Avatar style={{ padding: 5 }}>
-                      {item.currencySymbol || item.id}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={item.currencyName} />
-                  <ListItemText
-                    primary={
-                      money && basicCurrency
-                        ? (
-                            money[`USD_${item.id}`] /
-                            money[`USD_${basicCurrency.id}`]
-                          ).toFixed(4)
-                        : money
-                        ? money[`USD_${item.id}`].toFixed(4)
-                        : null
-                    }
-                  />
-                  <ListItemIcon>
-                    <Tooltip title="Add to Favourites">
-                      <Fab
-                        color="primary"
-                        aria-label="add"
-                        data-id={item.id}
-                        onClick={handleSelect}
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </Tooltip>
-                  </ListItemIcon>
+                  <Grid
+                    container
+                    spacing={4}
+                    justify="center"
+                    alignItems="center"
+                  >
+                    <Grid item xs={2}>
+                      <ListItemAvatar>
+                        <Avatar style={{ padding: 5 }}>
+                          {item.currencySymbol || item.id}
+                        </Avatar>
+                      </ListItemAvatar>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ListItemText
+                        classes={{
+                          primary: classes.name,
+                        }}
+                        primary={item.currencyName}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ListItemText
+                        classes={{
+                          primary: classes.rate,
+                        }}
+                        // rates
+                        primary={
+                          rates && basicCurrency
+                            ? (
+                                rates.find((rate) => rate[`USD_${item.id}`])[
+                                  `USD_${item.id}`
+                                ] /
+                                rates.find(
+                                  (rate) => rate[`USD_${basicCurrency.id}`]
+                                )[`USD_${basicCurrency.id}`]
+                              ).toFixed(4)
+                            : rates
+                            ? rates
+                                .find((rate) => rate[`USD_${item.id}`])
+                                [`USD_${item.id}`].toFixed(4)
+                            : null
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <ListItemIcon>
+                        <Tooltip title="Add to Favourites">
+                          <Fab
+                            color="primary"
+                            aria-label="add"
+                            data-id={item.id}
+                            onClick={handleSelect}
+                          >
+                            <AddIcon />
+                          </Fab>
+                        </Tooltip>
+                      </ListItemIcon>
+                    </Grid>
+                  </Grid>
                 </ListItem>
               );
             })
-          : err}
+          : null}
       </List>
     </div>
   );

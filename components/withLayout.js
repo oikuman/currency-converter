@@ -5,13 +5,12 @@ import { Grid } from "@material-ui/core";
 import NavBar from "./NavBar";
 import navButtons from "./buttons";
 
-import css from "../styles/General.module.css";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/General.module.css";
 
 const withLayout = (Wrapped) => {
   return (props) => {
     return (
-      <div className={css.general}>
+      <div className={styles.general}>
         <Head>
           <title>Currency Converter</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,7 +22,7 @@ const withLayout = (Wrapped) => {
             <Grid item xs={4}>
               <NavBar navButtons={navButtons} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Wrapped {...props} />
             </Grid>
           </Grid>

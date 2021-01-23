@@ -23,7 +23,7 @@ const CurrSelect = ({ data, currency, setCurrency }) => {
             <Avatar
               style={{
                 color: "orange",
-                backgroundColor: "aqua",
+                backgroundColor: "#19857b",
                 padding: 2,
                 margin: 10,
               }}
@@ -46,7 +46,7 @@ const CurrSelect = ({ data, currency, setCurrency }) => {
                 <Avatar
                   style={{
                     color: "orange",
-                    backgroundColor: "aqua",
+                    backgroundColor: "#19857b",
                     padding: 2,
                     margin: 2,
                   }}
