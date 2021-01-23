@@ -75,7 +75,7 @@ const Money = () => {
 
       <Grid container spacing={4} justify="center">
         <Grid item>
-          <Button variant="outlined" onClick={handleUpdate} disabled>
+          <Button variant="outlined" onClick={handleUpdate} disabled={false}>
             Update
           </Button>
         </Grid>
