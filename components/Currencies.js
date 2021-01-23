@@ -120,7 +120,7 @@ const Currencies = () => {
   React.useEffect(() => {
     // console.log("Current date:", getDate());
     // console.log(JSON.parse(localStorage.getItem("money")).rates);
-    // setRates(JSON.parse(localStorage.getItem("money")).rates);
+    setRates(JSON.parse(localStorage.getItem("money")).rates);
   }, []);
 
   // React.useEffect(() => {
