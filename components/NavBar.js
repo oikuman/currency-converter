@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import NavButton from "./NavButton";
+import NavButton from "./navButton";
 
 const NavBar = (props) => (
   <Grid container spacing={4} justify="center">
