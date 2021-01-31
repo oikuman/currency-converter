@@ -2,14 +2,13 @@ import React from "react";
 import { Avatar, InputAdornment, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const CurrSelect = ({ data, currency, setCurrency }) => {
+const CurrSelect = ({ data, currency, setCurrency, helper, id, size }) => {
   return (
     <Autocomplete
       fullWidth
       value={currency}
       options={data}
       onChange={(event, newValue) => {
-        // if (newValue) console.log("new id", newValue.id);
         setCurrency(newValue);
       }}
       getOptionSelected={(option, value) => option.id === value.id}
@@ -26,6 +25,7 @@ const CurrSelect = ({ data, currency, setCurrency }) => {
                 backgroundColor: "#19857b",
                 padding: 2,
                 margin: 10,
+                fontSize: "1rem",
               }}
             >
               {text}
@@ -37,8 +37,11 @@ const CurrSelect = ({ data, currency, setCurrency }) => {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Select"
+          id={id}
+          size={size}
+          // label="Select"
           variant="outlined"
+          helperText={helper}
           InputProps={{
             ...params.InputProps,
             startAdornment: currency && (
@@ -48,10 +51,14 @@ const CurrSelect = ({ data, currency, setCurrency }) => {
                     color: "orange",
                     backgroundColor: "#19857b",
                     padding: 2,
-                    margin: 2,
+                    margin: 10,
+                    height: "2rem",
+                    width: "2rem",
                   }}
                 >
-                  {currency.currencySymbol || currency.id}
+                  <span style={{ fontSize: "1rem" }}>
+                    {currency.currencySymbol || currency.id}
+                  </span>
                 </Avatar>
               </InputAdornment>
             ),

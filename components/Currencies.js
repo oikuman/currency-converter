@@ -1,14 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import {
-  Grid,
-  Tooltip,
-  Fab,
-  Avatar,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { Grid, Tooltip, Fab, Avatar, Typography } from "@material-ui/core";
 import {
   List,
   ListItem,
@@ -23,12 +16,12 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import CurrSelect from "../components/CurrSelect";
 import withLayout from "./withLayout";
-import data from "./data";
+// import data from "./data";
 
 import { NotificationContainer } from "react-notifications";
-import { createWarning, createSuccess } from "./alerts";
+// import { createWarning, createSuccess } from "./alerts";
 
-import Money from "./Money";
+import Updater from "./Updater";
 
 const useStyles = makeStyles((theme) => ({
   name: {
@@ -41,12 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Currencies = () => {
+const Currencies = ({ data }) => {
   const classes = useStyles();
-  // console.log(data);
   const [basicCurrency, setBasicCurrency] = React.useState(null);
   const [rates, setRates] = React.useState(null);
-  const [general, setGeneral] = React.useState([...data]);
+  const [general, setGeneral] = React.useState(data ? [...data] : []);
   const [selected, setSelected] = React.useState([]);
 
   const found = (array, id) => {
@@ -68,10 +60,7 @@ const Currencies = () => {
     );
   };
 
-  const getDate = () => format(new Date(), "yyyy-MM-dd");
-
   const handleSelect = (e) => {
-    // console.log("id", e.currentTarget.dataset.id);
     setSelected(
       sorted([...selected, found(general, e.currentTarget.dataset.id)])
     );
@@ -79,7 +68,6 @@ const Currencies = () => {
   };
 
   const handleDeselect = (e) => {
-    // console.log("id", e.currentTarget.dataset.id);
     setGeneral(
       sorted([...general, found(selected, e.currentTarget.dataset.id)])
     );
@@ -87,28 +75,20 @@ const Currencies = () => {
   };
 
   React.useEffect(() => {
-    // console.log("Current date:", getDate());
-    // console.log(JSON.parse(localStorage.getItem("money")).rates);
     const money = JSON.parse(localStorage.getItem("money"));
     if (money) setRates(money.rates);
   }, []);
 
-  // React.useEffect(() => {
-
-  // }, []);
-
   return (
     <div>
-      {/* NOTIFICATION */}
-      <Money />
-      <NotificationContainer />
-
+      <Updater rates={rates} setRates={setRates} />
       <Grid container spacing={4} justify="center">
         <Grid item xs={10} md={6}>
           <CurrSelect
-            data={data}
+            data={data ? [...data] : []}
             currency={basicCurrency}
             setCurrency={setBasicCurrency}
+            helper="Оберіть базову валюту. За замовченням USD"
           />
         </Grid>
       </Grid>
@@ -194,7 +174,6 @@ const Currencies = () => {
       <List>
         {general
           ? general.map((item) => {
-              // const rate = getFromMoney(`USD_${item.id}`);
               return (
                 <ListItem key={item.id}>
                   <Grid
@@ -262,6 +241,8 @@ const Currencies = () => {
             })
           : null}
       </List>
+
+      <NotificationContainer />
     </div>
   );
 };

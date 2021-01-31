@@ -92,7 +92,33 @@ const obj = {
   },
 };
 
-const data = Object.values(obj).sort((a, b) =>
+export const ids = [
+  "USD",
+  "EUR",
+  "HUF",
+  "AUD",
+  "SEK",
+  "BAM",
+  "CNY",
+  "CZK",
+  "KRW",
+  "DKK",
+  "KZT",
+  "BGN",
+  "CAD",
+  "JPY",
+  "LVL",
+  "CHF",
+  "PLN",
+  "UAH",
+  "GBP",
+];
+
+const currencies = ids.map((item) => {
+  return obj[item];
+});
+
+const data = currencies.sort((a, b) =>
   a["currencyName"].localeCompare(b["currencyName"], "en", {
     sensitivity: "base",
   })
