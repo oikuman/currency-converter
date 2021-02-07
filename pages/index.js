@@ -15,7 +15,7 @@ export default function Home({ data }) {
 
 export const getStaticProps = async () => {
   try {
-    const key = process.env.apiKey;
+    const key = process.env.apikey;
     const res = await axios.get(
       `https://free.currconv.com/api/v7/currencies?apiKey=${key}`
     );
