@@ -27,7 +27,7 @@ const Converter = () => {
   const [respErr, setRespErr] = React.useState(null);
 
   const handleConvert = (e) => {
-    const key = process.env.apiKey || @api-key;
+    const key = process.env.apiKey;
     const currStr =
       basicCurrency && convertCurrency
         ? `${basicCurrency.id}_${convertCurrency.id}`

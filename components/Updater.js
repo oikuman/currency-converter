@@ -11,7 +11,7 @@ const Updater = ({ rates, setRates }) => {
   const [update, setUpdate] = React.useState(false);
 
   const handleUpdate = () => {
-    const key = process.env.apiKey || @api-key;
+    const key = process.env.apiKey;
     const url = "https://free.currconv.com/api/v7/convert";
     const requests = data.map((item) =>
       axios.get(`${url}?q=USD_${item.id}&compact=ultra&apiKey=${key}`)
