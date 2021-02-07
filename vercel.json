@@ -1,5 +1,10 @@
 {
   "env": {
     "apikey": "@apikey"
+  },
+  "build": {
+    "env": {
+      "apikey": "@apikey"
+    }
   }
 }
